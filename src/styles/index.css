@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Orbitron:wght@500&family=Raleway:wght@600&display=swap');
+
+:root {
+  --body-bg-color: #111;
+  --simon-bg-color: #222;
+  --simon-button-green: #00a74a;
+  --simon-button-red: #9f0f17;
+  --simon-button-yellow: #cca707;
+  --simon-button-blue: #094a8f;
+  --simon-button-size: 16.5rem;
+  --simon-outer-size: 33rem;
+  --simon-borders: 1.2rem;
+  --simon-border-radius: 20rem;
+  --simon-bar-size: 35rem; /* vert and horizontal bars */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--body-bg-color);
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*-------------- OUTER CIRCLE with 4 COLOR BUTTONS --------------*/
+
+.simon {
+  background: var(--simon-bg-color);
+  border: var(--simon-borders) solid var(--simon-bg-color);
+  border-radius: var(--simon-border-radius);
+  height: var(--simon-outer-size);
+  margin: 0 auto;
+  width: var(--simon-outer-size);
+  display: grid;
+  grid-template-columns: var(--simon-button-size) var(--simon-button-size);
+  position: relative;
+}
+
+.simon__button {
+  height: var(--simon-button-size);
+  width: var(--simon-button-size);
+}
+
+.simon__button--green {
+  background: var(--simon-button-green);
+  border-radius: var(--simon-border-radius) 0 0 0;
+}
+.simon__button--green--lit {
+  background: #00f76d;
+  box-shadow: inset 0 0 10px #000000;
+}
+
+.simon__button--red {
+  background: var(--simon-button-red);
+  border-radius: 0 var(--simon-border-radius) 0 0;
+}
+
+.simon__button--red--lit {
+  background: #ff0000;
+  box-shadow: inset 0 0 10px #000000;
+}
+
+.simon__button--yellow {
+  background: var(--simon-button-yellow);
+  border-radius: 0 0 0 var(--simon-border-radius);
+}
+
+.simon__button--yellow--lit {
+  background: #faff00;
+  box-shadow: inset 0 0 10px #000000;
+}
+
+.simon__button--blue {
+  background: var(--simon-button-blue);
+  border-radius: 0 0 var(--simon-border-radius) 0;
+}
+
+.simon__button--blue--lit {
+  background: #0061ff;
+  box-shadow: inset 0 0 10px #000000;
+}
+.simon__vertical-bar {
+  background: var(--simon-bg-color);
+  height: var(--simon-bar-size);
+  width: var(--simon-borders);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.simon__horizontal-bar {
+  background: var(--simon-bg-color);
+  height: var(--simon-borders);
+  width: var(--simon-bar-size);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+/*-------------- INNER CIRCLE --------------*/
+
+.simon__center {
+  background: #e0e0e0;
+  border: var(--simon-borders) solid var(--simon-bg-color); 
+  border-radius: var(--simon-border-radius);
+  height: 18rem;
+  width: 18rem;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.simon__center__title {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 2.8rem;
+  margin: 0 auto;
+  margin: 2rem 0 0.5rem 0;             /* move count up and down */
+  width: 100%;
+}
+
+.simon__center__counter-screen {
+  background: #32050c;
+  border: 4px solid #222;
+  border-radius: .5rem;
+  color: #990000;
+  font-family: 'Orbitron';
+  font-size: 1.8rem;
+  height: 2.5rem;
+  line-height: 2.3rem;
+  margin: 0 auto;
+  width: 4.5rem;
+}
+.simon__center__counter-screen-text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.9rem;
+  margin: 0.2rem;
+}
+
+.simon__center__button {
+  border: 4px solid #222;
+  border-radius: 20rem;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0.75rem 0.25rem 0rem 0.25rem;            /*move buttons up/down */
+  height: 2.1rem;
+  width: 2.1rem;
+}
+
+.simon__center--start {
+  background: #00a74a;
+}
+.simon__center--strict {
+  background: #cca707;
+}
+.simon__center--reset {
+  background: #9f0f17;
+}
+.simon__center__button--press {
+  box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.simon__center__button-text {
+  display: inline-block;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.8rem;
+  margin: 0rem 0.2rem 0rem 0.2rem;
+}
+.simon__center__strict-light {
+  background: #32050c;
+  border: 3px solid #222;
+  border-radius: 50%;
+  height: 0.8rem;
+  margin: 0.5rem auto;
+  width: 0.8rem;
+}
+
+.simon__center__strict-light--on {
+  background: #990000;
+}
