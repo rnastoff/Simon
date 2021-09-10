@@ -1,4 +1,7 @@
 import 'normalize.css';
 import "./styles/index.css";
 
-console.log("Simon Game");
+import { Simon } from './simon';
+
+const simon = new Simon();
+

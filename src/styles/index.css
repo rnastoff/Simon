@@ -12,6 +12,8 @@
   --simon-borders: 1.2rem;
   --simon-border-radius: 20rem;
   --simon-bar-size: 35rem; /* vert and horizontal bars */
+  --simon-center-color: #e0e0e0;
+  --simon-center-size: 18rem;
 }
 
 * {
@@ -44,46 +46,47 @@ body {
   position: relative;
 }
 
-.simon__button {
+.simon__play-button {
+  cursor: pointer;
   height: var(--simon-button-size);
   width: var(--simon-button-size);
 }
 
-.simon__button--green {
+.simon__play-button--green {
   background: var(--simon-button-green);
   border-radius: var(--simon-border-radius) 0 0 0;
 }
-.simon__button--green--lit {
+.simon__play-button--green--lit {
   background: #00f76d;
   box-shadow: inset 0 0 10px #000000;
 }
 
-.simon__button--red {
+.simon__play-button--red {
   background: var(--simon-button-red);
   border-radius: 0 var(--simon-border-radius) 0 0;
 }
 
-.simon__button--red--lit {
+.simon__play-button--red--lit {
   background: #ff0000;
   box-shadow: inset 0 0 10px #000000;
 }
 
-.simon__button--yellow {
+.simon__play-button--yellow {
   background: var(--simon-button-yellow);
   border-radius: 0 0 0 var(--simon-border-radius);
 }
 
-.simon__button--yellow--lit {
+.simon__play-button--yellow--lit {
   background: #faff00;
   box-shadow: inset 0 0 10px #000000;
 }
 
-.simon__button--blue {
+.simon__play-button--blue {
   background: var(--simon-button-blue);
   border-radius: 0 0 var(--simon-border-radius) 0;
 }
 
-.simon__button--blue--lit {
+.simon__play-button--blue--lit {
   background: #0061ff;
   box-shadow: inset 0 0 10px #000000;
 }
@@ -113,8 +116,8 @@ body {
   background: #e0e0e0;
   border: var(--simon-borders) solid var(--simon-bg-color); 
   border-radius: var(--simon-border-radius);
-  height: 18rem;
-  width: 18rem;
+  height: var(--simon-center-size);
+  width: var(--simon-center-size);
   text-align: center;
   position: absolute;
   top: 50%;
@@ -159,13 +162,13 @@ body {
 }
 
 .simon__center--start {
-  background: #00a74a;
+  background: var(--simon-button-green);
 }
 .simon__center--strict {
-  background: #cca707;
+  background: var(--simon-button-yellow);
 }
 .simon__center--reset {
-  background: #9f0f17;
+  background: var(--simon-button-red);
 }
 .simon__center__button--press {
   box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.5);
