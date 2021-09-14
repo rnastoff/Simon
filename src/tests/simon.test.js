@@ -39,9 +39,16 @@ describe('All Simon buttons', () => {
 
 
 describe('handleStart', () => {
+
+  let simon;
+  beforeEach(() => {
+    simon = new Simon();
+  });
   
   test('should call addNumberToSequence', () => {
-
+    simon.addNumberToSequence = jest.fn();
+    simon.handleStart();
+    expect(simon.addNumberToSequence).toHaveBeenCalledWith(simon.getRandomNumber(), simon.computerSequence);
   });
 
   test('should call playSequence', () => {
