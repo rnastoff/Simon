@@ -161,6 +161,10 @@ body {
   width: 2.1rem;
 }
 
+.simon__center__button:active {
+  box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
 .simon__center--start {
   background: var(--simon-button-green);
 }
@@ -170,9 +174,7 @@ body {
 .simon__center--reset {
   background: var(--simon-button-red);
 }
-.simon__center__button--press {
-  box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.5);
-}
+
 .simon__center__button-text {
   display: inline-block;
   font-family: 'Raleway', sans-serif;

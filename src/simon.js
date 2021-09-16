@@ -11,11 +11,13 @@ export class Simon {
     this.counter = 0;
     this.computerSequence = [];
     this.playerSequence = [];
+    this.winningNumber = 10;
 
     this.greenSound = new Audio(greenSound);
     this.redSound = new Audio(redSound);
     this.yellowSound = new Audio(yellowSound);
     this.blueSound = new Audio(blueSound);
+    this.colorSounds = [this.greenSound, this.redSound, this.yellowSound, this.blueSound];
 
     this.playButtons = document.querySelectorAll('.simon__play-button');
 
@@ -42,17 +44,10 @@ export class Simon {
   }
 
   handleStart() {    
-    console.log("Inside handleStart");
     if (this.playing == false) {
       this.setPlaying(true);
-      this.addNumberToSequence(this.getRandomNumber(), this.computerSequence);
-      this.playSequence(this.computerSequence);
-      this.setPlayerTurn(true); //may need some trickery to bypass asynchronous playSequence();
+      this.handleComputerTurn();
     }
-  }
-
-  handleSequence() {
-
   }
 
   handleReset() {
@@ -65,30 +60,34 @@ export class Simon {
   }
 
   handlePlayButtons(button) {
-    
+    if (this.playerTurn) {
+      this.playNumber(button);
+      this.addNumberToSequence(button, this.playerSequence);
+      this.compareSequences();     
+    }
   }
+
 
   /*---------------- HELPER METHODS ---------------- */
 
-  pushCenterButton(button) {
-    
-  }
-  
   getRandomNumber() {
     return Math.round(Math.random() * 3);
   }
 
   playSequence(sequence) {
-    sequence.forEach(num => {
-      this.playNumber(num);        //Get rid of forEach, use setInterval and variable to work through array
-    });
+    let i = 0;                                            
+    let interval = setInterval(() => {    
+      this.playNumber(sequence[i]);
+      i++;
+      if (i >= sequence.length) clearInterval(interval);
+    }, 750);                                                //Time Gap between numbers playing
+
   }
 
   playNumber(num) {
-    let colorSounds = [this.greenSound, this.redSound, this.yellowSound, this.blueSound];
-    colorSounds[num].play();
-    this.flashButtonLight(num);
-  } 
+    this.colorSounds[num].play();
+    this.flashButtonLight(num);  
+  }
 
   flashButtonLight(num) {
     let element = this.playButtons[num];
@@ -96,8 +95,47 @@ export class Simon {
     let selector = "simon__play-button--" + color + "--lit"
     
     element.classList.toggle(selector);
-    setTimeout(() => { element.classList.toggle(selector); }, 500);
+    setTimeout(() => { element.classList.toggle(selector); }, 500);   //Time gap between turning off button light
   }
+
+  handleComputerTurn() {
+    this.setPlayerTurn(false);
+    this.addNumberToSequence(this.getRandomNumber(), this.computerSequence);
+    this.playSequence(this.computerSequence);
+    this.setPlayerTurn(true); //may need some trickery to bypass asynchronous playSequence();
+  }
+
+  compareSequences() {
+    for (let i = 0; i < this.playerSequence.length; i++) {
+      if (this.playerSequence[i] != this.computerSequence[i]) {   //wrong
+        this.playWrongAnswer();
+        this.resetSequence(this.playerSequence);
+        if (this.strict) this.handleReset();
+        return;
+      }
+    }
+
+    if (this.playerSequence.length == this.computerSequence.length) {
+      if (this.computerSequence.length == this.winningNumber) {
+        this.playWinSequence();
+      }
+      else {                                      //Player has the correct sequence, now computer's turn
+        this.resetSequence(this.playerSequence);
+        this.incrementCounter();
+        setTimeout(() => { this.handleComputerTurn(); }, 1000);  //Gap between playerTurn and ComputerTurn
+      }
+    } 
+  }
+  
+  playWrongAnswer() {
+    console.log("Play Wrong Answer");
+  }
+
+  playWinSequence() {
+    console.log("Play Win Sequence");
+  }
+
+ 
 
   debug() {
     console.log('playing: ', this.playing);
@@ -106,8 +144,10 @@ export class Simon {
     console.log('counter: ', this.counter);
     console.log('computerSequence: ', this.computerSequence);
     console.log('playerSequence: ', this.playerSequence);
+    console.log('------------------------------------------------')
   }
  
+
   /*---------------- STATE CHANGING METHODS ---------------- */
   setPlaying(bool) {
     this.playing = bool;
@@ -132,5 +172,9 @@ export class Simon {
 
   resetSequence(sequence) {
     sequence.length = 0;
+  }
+
+  incrementCounter() {
+    console.log("Increment counter");
   }
 }
