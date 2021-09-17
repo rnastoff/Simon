@@ -11,7 +11,7 @@ export class Simon {
     this.counter = 0;
     this.computerSequence = [];
     this.playerSequence = [];
-    this.winningNumber = 10;
+    this.winningNumber = 2;
 
     this.greenSound = new Audio(greenSound);
     this.redSound = new Audio(redSound);
@@ -46,7 +46,9 @@ export class Simon {
   handleStart() {    
     if (this.playing == false) {
       this.setPlaying(true);
+      this.incrementCounter();
       this.handleComputerTurn();
+      
     }
   }
 
@@ -81,7 +83,6 @@ export class Simon {
       i++;
       if (i >= sequence.length) clearInterval(interval);
     }, 750);                                                //Time Gap between numbers playing
-
   }
 
   playNumber(num) {
@@ -106,8 +107,8 @@ export class Simon {
   }
 
   compareSequences() {
-    for (let i = 0; i < this.playerSequence.length; i++) {
-      if (this.playerSequence[i] != this.computerSequence[i]) {   //wrong
+    for (let i = 0; i < this.playerSequence.length; i++) {                       //REWRITE THIS USING forEach with index
+      if (this.playerSequence[i] != this.computerSequence[i]) {   //If wrong
         this.playWrongAnswer();
         this.resetSequence(this.playerSequence);
         if (this.strict) this.handleReset();
@@ -128,14 +129,26 @@ export class Simon {
   }
   
   playWrongAnswer() {
-    console.log("Play Wrong Answer");
+    setTimeout(() => {          
+      [0,1,2,3].forEach(num => this.playNumber(num));
+    }, 750);  
   }
 
   playWinSequence() {
-    console.log("Play Win Sequence");
-  }
+    this.winCounter();
+    let sequence = [0,1,3,2,0,1,3,2,0,1,3,2,0,1,3,2];
+    let i = 0;
 
- 
+    setTimeout(() => {
+      let interval = setInterval(() => {
+        this.playNumber(sequence[i]);
+        i++;
+        if (i >= sequence.length) clearInterval(interval);
+      }, 300);
+    }, 1000);
+
+    setTimeout(() => { this.handleReset(); }, 8000);
+  }
 
   debug() {
     console.log('playing: ', this.playing);
@@ -149,6 +162,7 @@ export class Simon {
  
 
   /*---------------- STATE CHANGING METHODS ---------------- */
+
   setPlaying(bool) {
     this.playing = bool;
   }
@@ -167,14 +181,26 @@ export class Simon {
   }
 
   resetCounter() {
-    this.counter = "--";
+    this.counter = 0;
+    document.querySelector('.simon__center__counter-screen').textContent = "--";
   }
 
   resetSequence(sequence) {
     sequence.length = 0;
   }
 
-  incrementCounter() {
-    console.log("Increment counter");
+  incrementCounter() {  
+    if (this.computerSequence.length > 0 ) this.counter++;   
+    document.querySelector('.simon__center__counter-screen').textContent = this.counter;
+  }
+
+  winCounter() {
+    let screenCounter = document.querySelector('.simon__center__counter-screen');
+    let i = 0;    
+    let interval = setInterval(() => {
+      screenCounter.textContent = i % 2 ? "WIN" : "";
+      i++;
+      if (i >= 24) clearInterval(interval);
+    }, 250);
   }
 }

@@ -55,8 +55,4 @@ describe('handleStart', () => {
 
   });
 
-
-
-
-
 });
