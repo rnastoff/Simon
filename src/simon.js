@@ -5,13 +5,15 @@ import blueSound from './audio/simonSound4.mp3';
 
 export class Simon {
   constructor() {
-    this.playing = false;           //enable/disable start button
-    this.playerTurn = false;        //enable/disable play buttons/color lenses
+    this.playing = false;           //for disabling start button
+    this.playerTurn = false;        //for disabling play buttons
     this.strict = false;
     this.counter = 0;
     this.computerSequence = [];
     this.playerSequence = [];
-    this.winningNumber = 2;
+    this.winningNumber = 10;
+
+    this.screenCounter = document.querySelector('.simon__center__counter-screen');
 
     this.greenSound = new Audio(greenSound);
     this.redSound = new Audio(redSound);
@@ -32,7 +34,6 @@ export class Simon {
         this.handleCenterButtons(e.target.dataset.button);
       });
     });
-
   }
 
   /*---------------- BUTTON METHODS ---------------- */
@@ -48,7 +49,6 @@ export class Simon {
       this.setPlaying(true);
       this.incrementCounter();
       this.handleComputerTurn();
-      
     }
   }
 
@@ -70,7 +70,7 @@ export class Simon {
   }
 
 
-  /*---------------- HELPER METHODS ---------------- */
+  /*---------------- PLAYING METHODS ---------------- */
 
   getRandomNumber() {
     return Math.round(Math.random() * 3);
@@ -82,7 +82,7 @@ export class Simon {
       this.playNumber(sequence[i]);
       i++;
       if (i >= sequence.length) clearInterval(interval);
-    }, 750);                                                //Time Gap between numbers playing
+    }, 750);                                                //Time Gap between numbers in sequence playing
   }
 
   playNumber(num) {
@@ -103,21 +103,24 @@ export class Simon {
     this.setPlayerTurn(false);
     this.addNumberToSequence(this.getRandomNumber(), this.computerSequence);
     this.playSequence(this.computerSequence);
-    this.setPlayerTurn(true); //may need some trickery to bypass asynchronous playSequence();
+    this.setPlayerTurn(true); //async await here
   }
 
   compareSequences() {
-    for (let i = 0; i < this.playerSequence.length; i++) {                       //REWRITE THIS USING forEach with index
-      if (this.playerSequence[i] != this.computerSequence[i]) {   //If wrong
+    this.playerSequence.forEach((buttonNumber, index) => {
+      if (buttonNumber != this.computerSequence[index]) {
+        this.flashCounterMessage("!!!", 4);
         this.playWrongAnswer();
         this.resetSequence(this.playerSequence);
         if (this.strict) this.handleReset();
+        console.log(this.playerSequence);
         return;
       }
-    }
+    });
 
     if (this.playerSequence.length == this.computerSequence.length) {
       if (this.computerSequence.length == this.winningNumber) {
+        this.setPlayerTurn(false);
         this.playWinSequence();
       }
       else {                                      //Player has the correct sequence, now computer's turn
@@ -135,7 +138,7 @@ export class Simon {
   }
 
   playWinSequence() {
-    this.winCounter();
+    this.flashCounterMessage("WIN", 12);
     let sequence = [0,1,3,2,0,1,3,2,0,1,3,2,0,1,3,2];
     let i = 0;
 
@@ -150,16 +153,6 @@ export class Simon {
     setTimeout(() => { this.handleReset(); }, 8000);
   }
 
-  debug() {
-    console.log('playing: ', this.playing);
-    console.log('playerTurn: ', this.playerTurn);
-    console.log('strict: ', this.strict);
-    console.log('counter: ', this.counter);
-    console.log('computerSequence: ', this.computerSequence);
-    console.log('playerSequence: ', this.playerSequence);
-    console.log('------------------------------------------------')
-  }
- 
 
   /*---------------- STATE CHANGING METHODS ---------------- */
 
@@ -180,27 +173,26 @@ export class Simon {
     document.querySelector('.simon__center__strict-light').classList.toggle('simon__center__strict-light--on');
   }
 
-  resetCounter() {
-    this.counter = 0;
-    document.querySelector('.simon__center__counter-screen').textContent = "--";
-  }
-
   resetSequence(sequence) {
     sequence.length = 0;
   }
 
-  incrementCounter() {  
-    if (this.computerSequence.length > 0 ) this.counter++;   
-    document.querySelector('.simon__center__counter-screen').textContent = this.counter;
+  resetCounter() {
+    this.counter = 0;
+    this.screenCounter.textContent = "--";
   }
 
-  winCounter() {
-    let screenCounter = document.querySelector('.simon__center__counter-screen');
+  incrementCounter() {  
+    if (this.computerSequence.length > 0 ) this.counter++;   
+    this.screenCounter.textContent = this.counter;
+  }
+
+  flashCounterMessage(message, numberOfFlashes) {
     let i = 0;    
     let interval = setInterval(() => {
-      screenCounter.textContent = i % 2 ? "WIN" : "";
+      this.screenCounter.textContent = i % 2 ? message : "";
       i++;
-      if (i >= 24) clearInterval(interval);
+      if (i >= (numberOfFlashes*2)) clearInterval(interval);
     }, 250);
   }
 }
