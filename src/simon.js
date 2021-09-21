@@ -103,7 +103,7 @@ export class Simon {
     this.setPlayerTurn(false);
     this.addNumberToSequence(this.getRandomNumber(), this.computerSequence);
     this.playSequence(this.computerSequence);
-    this.setPlayerTurn(true); //async await here
+    this.setPlayerTurn(true); //Error Here
   }
 
   compareSequences() {
@@ -112,8 +112,7 @@ export class Simon {
         this.flashCounterMessage("!!!", 4);
         this.playWrongAnswer();
         this.resetSequence(this.playerSequence);
-        if (this.strict) this.handleReset();
-        console.log(this.playerSequence);
+        if (this.strict) setTimeout(() => { this.handleReset(); }, 2000);                                                                
         return;
       }
     });
