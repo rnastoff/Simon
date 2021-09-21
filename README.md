@@ -1,6 +1,6 @@
 # SIMON
 
-![Calculator Screenshot](calc.jpg)
+![Calculator Screenshot](simon.jpg)
 
 ## Overview
 - HTML, CSS, and vanilla Javascript
